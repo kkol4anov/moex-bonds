@@ -1,0 +1,10 @@
+# Ignore everything by default
+*
+
+# Allow only what the image needs
+!pyproject.toml
+!app/
+!README.md
+
+# Re-ignore junk inside allowed dirs
+app/**/__pycache__

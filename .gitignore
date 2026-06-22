@@ -1,24 +1,28 @@
-# Виртуальное окружение uv и стандартный venv
+# virtual env uv and standard venv
 .venv/
 venv/
 ENV/
 
-# Переменные окружения
+# env variables
 .env
 
-# Кэш компиляции Python
+# Python compiling cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.egg-info
 
-# Кэш инструментов (Ruff, mypy, pytest)
+# Tools cache (Ruff, mypy, pytest)
 .ruff_cache/
 .mypy_cache/
 .pytest_cache/
 
-# Файлы настроек ОС и редакторов
+# Settings files
 .vscode/
 
-# Файлы бэкапов
+# Backup files
 *.bak
+
+# Coverage tests
+.coverage
+htmlcov/
