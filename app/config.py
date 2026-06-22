@@ -13,13 +13,14 @@ class Settings(BaseSettings):
 
     iss_base_url: str = "https://iss.moex.com/iss"
     log_level: str = "INFO"
+    db_ssl: bool = False
 
     @computed_field
     @property
     def async_database_url(self) -> str:
-        # Render отдаёт postgresql://, asyncpg-движку нужен postgresql+asyncpg://
+        # Render gives postgresql:// while asyncpg-engine needs postgresql+asyncpg://
         return self.database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings() #type: ignore
+    return Settings() #type: ignore[call-arg]

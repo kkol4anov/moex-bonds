@@ -5,10 +5,10 @@ from app.api import health
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # СТАРТ: создаём долгоживущие ресурсы
+    # START: creating long-lived resources
     app.state.http = httpx.AsyncClient(timeout=10.0)
     yield
-    # ОСТАНОВКА: закрываем
+    # STOP: closing
     await app.state.http.aclose()
 
 app = FastAPI(title="MOEX Bonds Analytics", lifespan=lifespan)

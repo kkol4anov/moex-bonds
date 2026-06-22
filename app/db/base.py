@@ -1,6 +1,6 @@
 from sqlalchemy.orm import DeclarativeBase
 
 class Base(DeclarativeBase):
-    """Общий базовый класс. От него наследуются все модели.
-    Alembic берёт Base.metadata, чтобы видеть все таблицы для autogenerate."""
+    """The common base class. All models are inherired from it.
+    Alembic takes Base.metadata for seeing all tables for autogenerate."""
     pass
