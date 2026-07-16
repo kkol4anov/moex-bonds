@@ -1,6 +1,8 @@
 from functools import lru_cache
+
 from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -15,7 +17,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     db_ssl: bool = False
 
-    @computed_field
+    @computed_field # type: ignore[prop-decorator]
     @property
     def async_database_url(self) -> str:
         # Render gives postgresql:// while asyncpg-engine needs postgresql+asyncpg://
@@ -23,4 +25,4 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings() #type: ignore[call-arg]
+    return Settings()

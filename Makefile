@@ -1,4 +1,4 @@
-.PHONY: help up down logs test lint typecheck format check
+.PHONY: help up down logs test lint typecheck format check migrate revision
 
 help:
 	@echo "up         - start app + postgres (docker compose)"
@@ -32,3 +32,9 @@ format:
 	uv run ruff format .
 
 check: lint typecheck test
+
+migrate:
+	uv run alembic upgrade head
+
+revision:
+	uv run alembic revision --autogenerate -m "$(m)"

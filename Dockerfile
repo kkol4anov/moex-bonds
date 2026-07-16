@@ -11,6 +11,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 WORKDIR /app
 COPY pyproject.toml ./
 COPY app ./app
+COPY README.md ./
 RUN pip install -e .
 
 # ---- runtime ----

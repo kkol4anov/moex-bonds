@@ -16,8 +16,8 @@ Layered: `api → services → repositories → models` with an isolated pure-fu
 - **No authentification** - single-user local tool by desicn; `user_id` will be reserved in schema for a future multi-user design.
 
 ## Roadmap
-- [x] Stage 0 - project skeleton, Docker
-- [ ] Stage 1 - CI, domain model & migrations
+- [x] Stage 0 - project skeleton, Docker, CI, migrations
+- [ ] Stage 1 - domain model
 - [ ] Stage 2 - MOEX ISS client & data loader
 - [ ] Stage 3 - financial math with tests
 - [ ] Stage 4 - REST API

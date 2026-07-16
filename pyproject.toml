@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "moex-bonds"
@@ -43,6 +43,8 @@ indent-style = "space"
 [tool.mypy]
 python_version = "3.12"
 plugins = ["pydantic.mypy"]
+namespace_packages = true
+explicit_package_bases = true
 strict = true
 
 [tool.pytest.ini_options]
