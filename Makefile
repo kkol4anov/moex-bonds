@@ -9,6 +9,7 @@ help:
 	@echo "typecheck  - mypy"
 	@echo "format     - ruff format"
 	@echo "check      - lint + typecheck + test"
+	@echo "fix        - ruff check and fix"
 
 up:
 	docker compose up --build
@@ -32,6 +33,9 @@ format:
 	uv run ruff format .
 
 check: lint typecheck test
+
+fix:
+	uv run ruff check . --fix
 
 migrate:
 	uv run alembic upgrade head
