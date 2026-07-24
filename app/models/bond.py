@@ -10,7 +10,7 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
 	from app.models.coupon import Coupon
-# 	from app.models.quote import Quote
+	from app.models.quote import Quote
 
 class CouponType(StrEnum):
 	FLOAT = "FLOAT"
@@ -44,6 +44,6 @@ class Bond(Base):
     coupons: Mapped[list["Coupon"]] = relationship(
         back_populates="bond", cascade="all, delete-orphan"
     )
-    # quotes: Mapped[list["Quote"]] = relationship(
-    #     back_populates="bond", cascade="all, delete-orphan"
-    # )
+    quotes: Mapped[list["Quote"]] = relationship(
+        back_populates="bond", cascade="all, delete-orphan"
+    )
