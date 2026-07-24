@@ -1,15 +1,15 @@
 from datetime import date
 from decimal import Decimal
 from enum import StrEnum
+from typing import TYPE_CHECKING
 
-# from typing import TYPE_CHECKING
 from sqlalchemy import Date, Numeric, String
-from sqlalchemy.orm import Mapped, mapped_column  #, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
 
-# if TYPE_CHECKING:
-# 	from app.models.coupon import Coupon
+if TYPE_CHECKING:
+	from app.models.coupon import Coupon
 # 	from app.models.quote import Quote
 
 class CouponType(StrEnum):
@@ -41,9 +41,9 @@ class Bond(Base):
     maturity_date: Mapped[date] = mapped_column(Date, index=True)
     coupon_frequency: Mapped[int]
     coupon_type: Mapped[CouponType]
-    # coupons: Mapped[list["Coupon"]] = relationship(
-    #     back_populates="bond", cascade="all, delete-orphan"
-    # )
+    coupons: Mapped[list["Coupon"]] = relationship(
+        back_populates="bond", cascade="all, delete-orphan"
+    )
     # quotes: Mapped[list["Quote"]] = relationship(
     #     back_populates="bond", cascade="all, delete-orphan"
     # )
