@@ -5,17 +5,17 @@ Revises: 5e3cceaade34
 Create Date: 2026-07-24 09:33:46.126085
 
 """
-from typing import Sequence, Union
+from collections.abc import Sequence
 
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision: str = '027f90bc1332'
-down_revision: Union[str, Sequence[str], None] = '5e3cceaade34'
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | Sequence[str] | None = '5e3cceaade34'
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -28,7 +28,10 @@ def upgrade() -> None:
     sa.Column('rate', sa.Numeric(precision=18, scale=4), nullable=False),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_fx_rates'))
     )
-    op.create_index('ix_fx_rates_currency_on_date', 'fx_rates', ['currency', 'on_date'], unique=True)
+    op.create_index('ix_fx_rates_currency_on_date',
+                    'fx_rates',
+                    ['currency', 'on_date'],
+                    unique=True)
     # ### end Alembic commands ###
 
 
