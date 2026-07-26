@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.fx_rate import FxRate
 from app.repositories.fx_repo import FxRateRepository
 
+
 async def test_add_and_get_fx_rate(session: AsyncSession) -> None:
     repo = FxRateRepository(session)
     fx_rate_1 = FxRate(
