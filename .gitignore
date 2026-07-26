@@ -1,0 +1,28 @@
+# virtual env uv and standard venv
+.venv/
+venv/
+ENV/
+
+# env variables
+.env
+
+# Python compiling cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info
+
+# Tools cache (Ruff, mypy, pytest)
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# Settings files
+.vscode/
+
+# Backup files
+*.bak
+
+# Coverage tests
+.coverage
+htmlcov/
