@@ -24,18 +24,18 @@ test:
 	uv run pytest
 
 lint:
-	uv run ruff check .
+	uv run ruff check app
 
 typecheck:
-	uv run mypy .
+	uv run mypy app
 
 format:
-	uv run ruff format .
+	uv run ruff format app
 
 check: lint typecheck test
 
 fix:
-	uv run ruff check . --fix
+	uv run ruff check app --fix
 
 migrate:
 	uv run alembic upgrade head
