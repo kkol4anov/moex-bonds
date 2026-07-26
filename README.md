@@ -17,7 +17,7 @@ Layered: `api → services → repositories → models` with an isolated pure-fu
 
 ## Roadmap
 - [x] Stage 0 - project skeleton, Docker, CI, migrations
-- [ ] Stage 1 - domain model
+- [x] Stage 1 - domain model
 - [ ] Stage 2 - MOEX ISS client & data loader
 - [ ] Stage 3 - financial math with tests
 - [ ] Stage 4 - REST API
@@ -57,7 +57,7 @@ make migrate # alembic upgrade head
 ## Development
 
 ```bash
-uv sync --extra dev # install dependencies incl. dev tools
+uv sync # install dependencies incl. dev tools
 make check # lint + typecheck + test (same as CI)
 make test # pytest only
 make logs # tail application logs
