@@ -1,4 +1,7 @@
+from typing import Any
+
 from sqlalchemy import select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.bond import Bond
@@ -17,3 +20,24 @@ class BondRepository:
         stmt = select(Bond).where(Bond.secid == secid)
         result = await self._session.execute(stmt)
         return result.scalar_one_or_none()
+
+    async def upsert(self, values: list[dict[str, Any]]) -> int:
+        """Inserts or updates bonds by natural key (secid). Returns amount of affected rows."""
+        if not values:
+            return 0
+
+        stmt = pg_insert(Bond).values(values)
+        update_columns = {
+            column.name: stmt.excluded[column.name]
+            for column in Bond.__table__.columns
+            if column.name not in ("id", "secid")
+        }
+        stmt = stmt.on_conflict_do_update(
+            index_elements=[Bond.secid],
+            set_=update_columns,
+        )
+        result = await self._session.execute(stmt)
+
+        affected_ids = result.scalars().all()
+
+        return len(affected_ids)
