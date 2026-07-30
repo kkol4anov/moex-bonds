@@ -26,16 +26,16 @@ class BondRepository:
         if not values:
             return 0
 
-        stmt = pg_insert(Bond).values(values)
+        insert_stmt = pg_insert(Bond).values(values)
         update_columns = {
-            column.name: stmt.excluded[column.name]
+            column.name: insert_stmt.excluded[column.name]
             for column in Bond.__table__.columns
             if column.name not in ("id", "secid")
         }
-        stmt = stmt.on_conflict_do_update(
+        stmt = insert_stmt.on_conflict_do_update(
             index_elements=[Bond.secid],
             set_=update_columns,
-        )
+        ).returning(Bond.secid)
         result = await self._session.execute(stmt)
 
         affected_ids = result.scalars().all()

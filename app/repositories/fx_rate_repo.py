@@ -27,13 +27,13 @@ class FxRateRepository:
     async def upsert(self, values: list[dict[str, Any]]) -> int:
             if not values:
                 return 0
-            stmt = pg_insert(FxRate).values(values)
-            stmt = stmt.on_conflict_do_update(
+            insert_stmt = pg_insert(FxRate).values(values)
+            stmt = insert_stmt.on_conflict_do_update(
                 index_elements=[FxRate.currency, FxRate.on_date],
                 set_={
-                    "rate": stmt.excluded.rate,
+                    "rate": insert_stmt.excluded.rate,
                 },
-            )
+            ).returning(FxRate.id)
             result = await self._session.execute(stmt)
             affected_ids = result.scalars().all()
             

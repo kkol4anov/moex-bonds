@@ -29,15 +29,15 @@ class QuoteRepository:
     async def upsert(self, values: list[dict[str, Any]]) -> int:
             if not values:
                 return 0
-            stmt = pg_insert(Quote).values(values)
-            stmt = stmt.on_conflict_do_update(
+            insert_stmt = pg_insert(Quote).values(values)
+            stmt = insert_stmt.on_conflict_do_update(
                 index_elements=[Quote.bond_id, Quote.quote_date],
                 set_={
-                    "clean_price_pct": stmt.excluded.clean_price_pct,
-                    "accrued_interest": stmt.excluded.accrued_interest,
-                    "volume": stmt.excluded.volume,
+                    "clean_price_pct": insert_stmt.excluded.clean_price_pct,
+                    "accrued_interest": insert_stmt.excluded.accrued_interest,
+                    "volume": insert_stmt.excluded.volume,
                 },
-            )
+            ).returning(Quote.bond_id)
             result = await self._session.execute(stmt)
             affected_ids = result.scalars().all()
             
