@@ -4,7 +4,7 @@ from decimal import Decimal
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.fx_rate import FxRate
-from app.repositories.fx_repo import FxRateRepository
+from app.repositories.fx_rate_repo import FxRateRepository
 
 
 async def test_add_and_get_fx_rate(session: AsyncSession) -> None:
