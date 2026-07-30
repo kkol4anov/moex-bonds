@@ -35,3 +35,34 @@ async def test_add_and_get_fx_rate(session: AsyncSession) -> None:
     assert fetched_4 is None
     assert fetched_5 is None
     assert fetched_6 is None
+
+async def test_upsert_and_get_fx_rate(session: AsyncSession) -> None:
+    repo = FxRateRepository(session)
+    fx_rate_1 = FxRate(
+        currency="USD",
+        on_date=date(2018, 7, 11),
+        rate=Decimal("100.0000"),
+    )
+    fx_rate_2 = FxRate(
+        currency="CNY",
+        on_date=date(2022, 8, 14),
+        rate=Decimal("12.0000"),
+    )
+    await repo.add(fx_rate_1)
+    await repo.add(fx_rate_2)
+
+    upsert_values = [
+        dict(
+            currency="USD",
+            on_date=date(2018, 7, 11),
+            rate=Decimal("85.0000"),
+        )
+    ]
+
+    await repo.upsert(upsert_values)
+    session.expire_all()
+
+    fetched = await repo.get_for(currency="USD", on_date=date(2018, 7, 11))
+    assert fetched is not None
+
+    assert fetched.rate == Decimal("85.0000")

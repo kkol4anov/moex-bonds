@@ -55,3 +55,68 @@ async def test_add_and_get_quote(session: AsyncSession) -> None:
     assert isinstance(fetched_latest, Quote)
 
     assert fetched_latest == quote_2
+
+async def test_upsert_and_get_quote(session: AsyncSession) -> None:
+    bond_repo = BondRepository(session)
+    bond = Bond(
+        secid="SU26230RMFS1",
+        isin="RU000A0ZYQ73",
+        short_name="ОФЗ 26230",
+        issuer="Минфин России",
+        issuer_type=IssuerType.GOVERNMENT,
+        coupon_type=CouponType.FIXED,
+        currency="RUB",
+        face_value=Decimal("1000.0000"),
+        issue_date=date(2018, 7, 11),
+        maturity_date=date(2039, 3, 16),
+        coupon_frequency=2,
+    )
+    await bond_repo.add(bond)
+
+    fetched_bond = await bond_repo.get_by_secid("SU26230RMFS1")
+    assert fetched_bond is not None
+
+    fetched_bond_id = fetched_bond.id
+
+    quote_repo = QuoteRepository(session)
+    quote_1 = Quote(
+        bond_id=fetched_bond.id,
+        quote_date=date(2023, 6, 15),
+        clean_price_pct=Decimal("38.39"),
+        accrued_interest=Decimal("38.39"),
+        volume=Decimal("38.39"),
+        bond=fetched_bond,
+    )
+    await quote_repo.add(quote_1)
+
+    quote_2 = Quote(
+        bond_id=fetched_bond.id,
+        quote_date=date(2024, 4, 3),
+        clean_price_pct=Decimal("38.39"),
+        accrued_interest=Decimal("38.39"),
+        volume=Decimal("38.39"),
+        bond=fetched_bond,
+    )
+    await quote_repo.add(quote_2)
+
+    upsert_values = [
+        dict(
+            bond_id=fetched_bond.id,
+            quote_date=date(2024, 4, 3),
+            clean_price_pct=Decimal("50.00"),
+            accrued_interest=Decimal("60.00"),
+            volume=Decimal("70.00"),
+        )
+    ]
+
+    affected_rows = await quote_repo.upsert(upsert_values)
+    session.expire_all()
+
+    assert affected_rows > 0
+
+    fetched_latest = await quote_repo.get_latest(fetched_bond_id)
+    assert fetched_latest is not None
+
+    assert fetched_latest.accrued_interest == Decimal("60.00")
+    assert fetched_latest.volume == Decimal("70.00")
+
