@@ -8,12 +8,12 @@ Data source: public [MOEX ISS API](https://iss.moex.com/iss/reference/).
 
 ## Architecture
 
-Layered: `api → services → repositories → models` with an isolated pure-function layer (`finance/`) for financical math.
+Layered: `api → services → repositories → models` with an isolated pure-function layer (`finance/`) for financial math.
 
 ## Trade-offs & Scope
 
 - **PostgreSQL vs SQLite**: single user app, but Postgres gives production-grade numeric/date types, ENUMs and real Alembic migrations.
-- **No authentification** - single-user local tool by desicn; `user_id` will be reserved in schema for a future multi-user design.
+- **No authentication** - single-user local tool by design; `user_id` will be reserved in schema for a future multi-user design.
 
 ## Roadmap
 - [x] Stage 0 - project skeleton, Docker, CI, migrations
@@ -28,7 +28,7 @@ Layered: `api → services → repositories → models` with an isolated pure-fu
 
 `app/main.py` — entry point FastAPI
 
-[Makefile](Makefile) — union command interface
+[Makefile](Makefile) — unified command interface
 
 ## Quick start
 
@@ -39,8 +39,8 @@ cp .env.example .env
 make up
 ```
 
-The API is avaliable at `http://localhost:8000`
-Open API docs at `http://localhost:8000/docs`
+The API is available at `http://localhost:8000`
+OpenAPI docs at `http://localhost:8000/docs`
 
 Health check:
 ```bash
