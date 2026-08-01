@@ -1,4 +1,6 @@
-from sqlalchemy import select
+from typing import Any
+
+from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.coupon import Coupon
@@ -17,3 +19,10 @@ class CouponRepository:
         stmt = select(Coupon).where(Coupon.bond_id == bond_id).order_by(Coupon.coupon_date)
         result = await self._session.execute(stmt)
         return list(result.scalars().all())
+
+    async def replace_for_bond(self, bond_id: int, values: list[dict[str, Any]]) -> int:
+        await self._session.execute(delete(Coupon).where(Coupon.bond_id == bond_id))
+        if not values:
+            return 0
+        await self._session.execute(insert(Coupon), values)
+        return len(values)
