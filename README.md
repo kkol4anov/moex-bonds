@@ -12,6 +12,19 @@ Layered: `api → services → repositories → models` with an isolated pure-fu
 
 [Architecture](docs/architecture.md)
 
+## Related work
+
+This is not a novel product. Bond screening for MOEX is a solved problem, and now the exchange itself ships a real-time screener covering all ~4,000 listed issues. Commercial services (Cbonds, Rusbonds, dohod.ru, bonds-lab.ru) go considerably further.
+
+What this project does differently is not the feature set:
+
+- **ISS clients** (`apimoex`, `aiomoex`, `moex_iss`) are libraries, not applications. A thin in-repo client over four endpoints keeps the Pydantic parsing of ISS column-row payloads explicit and testable, without a dependency for 4 endpoints.
+- **Open-source MOEX bond tools** are almost exclusively single-file scripts, notebooks, or Telegram bots. None ship schema migrations, a typed domain model, or tests that assert financial correctness.
+  The closest architectural sibling is `kapitanov/moex-bond-recommender` (Go, ISS + Postgres + Docker), which models hold-to-maturity only.
+- **FX-denominated issues** (replacement bonds, CNY-denominated OFZ) are absent from every open-source project surveyed. They are the reason `FxRate` exists in the schema from the first migration.
+
+The goal here is a correct and defensible core: `Decimal` end to end, pure finance functions with no I/O, and reference-bond tests.
+
 ## Trade-offs & Scope
 
 - **PostgreSQL vs SQLite**: single user app, but Postgres gives production-grade numeric/date types, ENUMs and real Alembic migrations.
