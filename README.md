@@ -10,6 +10,8 @@ Data source: public [MOEX ISS API](https://iss.moex.com/iss/reference/).
 
 Layered: `api → services → repositories → models` with an isolated pure-function layer (`finance/`) for financial math.
 
+[Architecture](docs/architecture.md)
+
 ## Trade-offs & Scope
 
 - **PostgreSQL vs SQLite**: single user app, but Postgres gives production-grade numeric/date types, ENUMs and real Alembic migrations.
