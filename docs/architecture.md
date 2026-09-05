@@ -10,8 +10,11 @@ Individual decisions and their rejected alternatives are recorded separately in 
 ## 1. Layers
 
 ```mermaid
+---
+title: App Layers
+---
 flowchart TD
-    CLI["CLI · Typer <i>(planned)</i>"] --> SVC
+    CLI["CLI - Typer <i>(planned)</i>"] --> SVC
     API["API - FastAPI"] --> SVC
     WEB["Web UI - Jinja2 <i>(planned)</i>"] --> SVC
 
@@ -21,7 +24,20 @@ flowchart TD
 
     REPO --> MOD["models - SQLAlchemy ORM"]
     MOD --> DB[("PostgreSQL 16")]
-    INT -.HTTP.-> EXT["MOEX ISS - CBR"]
+    INT -.HTTP.-> EXT["MOEX ISS / CBR"]
+```
+
+
+```mermaid
+---
+title: Basic Data Flow
+---
+flowchart TD
+    ISS["MOEX ISS / CBR"] --> CLIENT
+    CLIENT["Client\n(Data parsing)"] --> MAPPING["Mapping\n(Raw to domain)"]
+    MAPPING --> REPO["Repository\nUpsert by chunks"]
+    REPO --> DB["PostgreSQL"]
+
 ```
 
 Dependencies point in one direction only: **entry points → services → repositories → models**. `finance/` and `integrations/` are leaves. They are called by services and call nothing inside the application.
